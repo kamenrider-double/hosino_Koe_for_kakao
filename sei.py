@@ -48,7 +48,7 @@ response = client.chat.completions.create(
         },
         {
             "role": "user",
-            "content": "안녕! 뭐하고 있어?",
+            "content": input(),
         }
     ],
     model=model
