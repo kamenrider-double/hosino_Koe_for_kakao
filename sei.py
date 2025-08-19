@@ -27,7 +27,7 @@ file_data = {}
 for file_path in file_list:
     ext = os.path.splitext(file_path)[1].lower()
     if ext == ".csv":
-        with open(file_path, encoding="cp949") as f:  # 또는 encoding="euc-kr"
+        with open(file_path, encoding="cp949") as f: 
             file_data[file_path] = f.read()
     else:
         with open(file_path, encoding="utf-8") as f:
