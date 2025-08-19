@@ -7,6 +7,7 @@ const apiRouter = express.Router();
 app.use(logger('dev', {}));
 app.use(express.json());
 app.use('/api', apiRouter)
+nee=app.on('mount', )
 
 const result = require('child_process').spawn('python', [ 'sei.py', userRequest.user.id, userRequest.utterance , action.name]);
 
