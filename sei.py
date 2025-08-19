@@ -32,6 +32,8 @@ def hahaha():
 
 documents=hahaha()
 
+Q=""
+
 response = client.chat.completions.create(
     messages=[
 
@@ -52,5 +54,8 @@ response = client.chat.completions.create(
     model=model
 )
 
-print(response.choices[0].message.content)
+
+A=response.choices[0].message.content
+
+print(A)
 
