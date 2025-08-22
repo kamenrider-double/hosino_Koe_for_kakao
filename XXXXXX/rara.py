@@ -5,6 +5,7 @@ from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.chat_models import ChatOpenAI
+from langchain.chains import RetrievalQA 
 from langchain.schema import HumanMessage, AIMessage
 
 model = "openai/gpt-5-nano"
@@ -16,29 +17,16 @@ client = OpenAI(
 )
 loader=TextLoader("/workspaces/hosino_Koe_for_kakao/XXXXXX/soudan.txt", encoding="utf-8")
 documents=loader.load()
+embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+vectorstore = FAISS.from_documents(documents, embeddings)
 
-Q=""
+retriever = vectorstore.as_retriever()
 
-response = client.chat.completions.create(
-    messages=[
+llm = ChatOpenAI(model=model.join(client), temperature=1.5)
 
-        {
-            "role": "system",
-            "content": (
-                "너는 상담사야. 내담자의 이야기를 차분하게 듣고 다음 규칙에 맞춰서 이야기를 하면 돼.: "
-                + "\n".join(str(documents[0]))
-            ),
-        },
-        {
-            "role": "user",
-            "content": input(),
-        }
-    ],
-    model=model
-)
+qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever)
 
-
-A=response.choices[0].message.content
+A = qa_chain.run(input())
 
 print(A)
 
